@@ -1,31 +1,31 @@
-import styled, { css } from 'styled-components';
-import { hexa, tint } from '../utils';
-import theme from '../../config/theme';
+import styled, { css } from "styled-components";
+import { hexa, tint } from "../utils";
+import theme from "../../config/theme";
 
 const getPadding = size => {
   switch (size) {
-    case 'small':
-      return '8px 12px';
-    case 'default':
-      return '12px 16px';
-    case 'large':
-      return '16px 2px';
+    case "small":
+      return "8px 12px";
+    case "default":
+      return "12px 16px";
+    case "large":
+      return "16px 2px";
     default: {
-      return '12px 16px';
+      return "12px 16px";
     }
   }
 };
 
 const getFontSize = size => {
   switch (size) {
-    case 'small':
-      return '14px';
-    case 'default':
-      return '16px';
-    case 'large':
-      return '18px';
+    case "small":
+      return "14px";
+    case "default":
+      return "16px";
+    case "large":
+      return "18px";
     default: {
-      return '16px';
+      return "16px";
     }
   }
 };
@@ -48,9 +48,9 @@ const base = css`
   position: relative;
   text-align: center;
   padding: ${props => getPadding(props.size)};
-  opacity: ${props => (props.disabled ? '0.64' : '1')};
+  opacity: ${props => (props.disabled ? "0.64" : "1")};
   box-shadow: ${props =>
-    props.disabled ? 'none' : `0 1px 2px rgba(0,0,0,0.04)`};
+    props.disabled ? "none" : `0 1px 2px rgba(0,0,0,0.04)`};
 
   &:disabled {
     cursor: not-allowed;
@@ -59,7 +59,7 @@ const base = css`
   &:hover {
     transition: all 0.2s ease-in-out;
     box-shadow: ${props =>
-      props.disabled ? 'none' : `${theme.shadows.button}`};
+      props.disabled ? "none" : `${theme.shadows.button}`};
   }
 
   &:focus {
@@ -105,7 +105,7 @@ export const PrimaryButton = styled.button`
       theme.brand.primary,
       16
     )}, ${tint(theme.brand.primary, 16)})`};
-    box-shadow: ${props => (props.disabled ? 'none' : theme.shadows.button)};
+    box-shadow: ${props => (props.disabled ? "none" : theme.shadows.button)};
   }
 
   &:active {
@@ -227,7 +227,7 @@ export const FacebookButton = styled.button`
       theme.social.facebook,
       16
     )}, ${tint(theme.social.facebook, 16)})`};
-    box-shadow: ${props => (props.disabled ? 'none' : theme.shadows.button)};
+    box-shadow: ${props => (props.disabled ? "none" : theme.shadows.button)};
   }
 
   &:active {
@@ -256,7 +256,7 @@ export const TwitterButton = styled.button`
       theme.social.twitter,
       4
     )}, ${tint(theme.social.twitter, 4)})`};
-    box-shadow: ${props => (props.disabled ? 'none' : theme.shadows.button)};
+    box-shadow: ${props => (props.disabled ? "none" : theme.shadows.button)};
   }
 
   &:active {
@@ -290,7 +290,7 @@ export const PatreonButton = styled.button`
       theme.social.patreon,
       4
     )}, ${tint(theme.social.patreon, 4)})`};
-    box-shadow: ${props => (props.disabled ? 'none' : theme.shadows.button)};
+    box-shadow: ${props => (props.disabled ? "none" : theme.shadows.button)};
   }
 
   &:active {
@@ -320,7 +320,7 @@ export const GitHubButton = styled.button`
       theme.social.github,
       4
     )}, ${tint(theme.social.github, 4)})`};
-    box-shadow: ${props => (props.disabled ? 'none' : theme.shadows.button)};
+    box-shadow: ${props => (props.disabled ? "none" : theme.shadows.button)};
   }
 
   &:active {
@@ -333,6 +333,36 @@ export const GitHubButton = styled.button`
   theme.social.github,
   0.16
 )};
+  }
+
+  svg {
+    fill: #fff;
+  }
+`;
+
+export const WhiteButton = styled.button`
+  ${base}
+  border: 1px solid #FFF;
+  color: ${theme.text.secondary};
+  background-color: #fff;
+  background-image: ${`linear-gradient(to bottom, #FFF, #FFF)`};
+
+  &:hover {
+    color: ${theme.text.secondary};
+    background-image: ${`linear-gradient(to bottom, ${tint("#FFF", 4)}, ${tint(
+      "#FFF",
+      4
+    )})`};
+    box-shadow: ${props => (props.disabled ? "none" : theme.shadows.button)};
+  }
+
+  &:active {
+    border: 1px solid #fff;
+    background-image: ${`linear-gradient(to top, #FFF, #FFF)`};
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 1px ${theme.ui.default}, 0 0 0 3px ${hexa("#FFF", 0.16)};
   }
 
   svg {

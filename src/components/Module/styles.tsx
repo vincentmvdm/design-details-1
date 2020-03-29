@@ -1,6 +1,6 @@
-import styled, { css } from 'styled-components';
-import theme from '../../config/theme';
-import { hexa, tint } from '../utils';
+import styled, { css } from "styled-components";
+import theme from "../../config/theme";
+import { hexa, tint } from "../utils";
 
 export const Container = styled.div`
   background: ${props =>
@@ -14,8 +14,11 @@ export const Container = styled.div`
     grid-column: span 1;
   }
 
-  ${props => props.isLink && css`
+  ${props =>
+    props.isLink &&
+    css`
     &:hover {
+      cursor: pointer;
       background: ${props =>
         props.tint ? hexa(props.tint, 0.2) : theme.ui.borderLight};
       }
@@ -46,7 +49,7 @@ export const LargeTitle = styled(Title)`
   font-size: 32px;
   line-height: 1.2;
   grid-template-columns: 1fr;
-`
+`;
 
 export const Description = styled.p`
   font-size: 16px;
