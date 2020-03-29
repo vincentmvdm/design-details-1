@@ -4,13 +4,16 @@ import PageWrapper from "../../components/PageWrapper";
 import Module from "../../components/Module";
 import EpisodesList from "../../components/EpisodesList";
 import Welcome from "../../components/Welcome";
-import { SearchCircle } from "../../components/Icons";
+import Recommended from "../../components/Recommended";
+import { SearchCircle, StarCircle } from "../../components/Icons";
 import theme from "../../config/theme";
 import { EpisodesPageGrid } from "../../components/PageWrapper/styles";
 import EpisodesSidebar from "../../components/EpisodesSidebar";
 import { getEpisodes } from "../../data";
 
-const Content = styled.div`
+const Content = styled.div``;
+
+/*
   grid-area: content;
   display: grid;
   grid-gap: 24px;
@@ -20,11 +23,12 @@ const Content = styled.div`
   @media (max-width: 768px) {
     grid-gap: 12px;
   }
-`;
+*/
 
 function Episodes({ episodes }) {
   const [played, setPlayed] = useState({});
   const [recommended, setRecommended] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const storedPlayed = localStorage.getItem("played");
@@ -34,8 +38,49 @@ function Episodes({ episodes }) {
   }, []);
 
   useEffect(() => {
-    console.log("test");
-  }, [played]);
+    function getRecommendations() {
+      let playedList = [];
+      for (let [id, isPlayed] of Object.entries(played)) {
+        if (isPlayed) {
+          playedList = [...playedList, id];
+        }
+      }
+
+      fetch("http://localhost:5000/recommendations", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          played: playedList
+        })
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (episodes.length > 0) {
+            let retrievedRecommendations = [];
+            data.forEach(rec => {
+              const episode = episodes.find(episode => episode.id == rec);
+              if (episode) {
+                retrievedRecommendations = [
+                  ...retrievedRecommendations,
+                  episode
+                ];
+              }
+            });
+            setRecommended(retrievedRecommendations);
+            console.log(recommended);
+          }
+        })
+        .catch(error => {
+          console.error("Error:", error);
+        });
+    }
+
+    if (hasPlayedEpisodes()) {
+      getRecommendations();
+    }
+  }, [played, episodes]);
 
   function hasPlayedEpisodes() {
     for (let [id, isPlayed] of Object.entries(played)) {
@@ -55,18 +100,28 @@ function Episodes({ episodes }) {
     localStorage.setItem("played", JSON.stringify(playedEpisodes));
   }
 
+  function handleSearch(e) {
+    setSearchTerm(e.target.value);
+  }
+
   return (
     <PageWrapper>
       <EpisodesPageGrid>
         <EpisodesSidebar />
-
         <Content>
+          <input
+            type="text"
+            placeholder="Search"
+            onChange={handleSearch}
+            value={searchTerm}
+          />
           {hasPlayedEpisodes() ? (
             <Module tint={theme.brand.primary}>
               <Module.Title tint={theme.brand.primary}>
-                <SearchCircle />
+                <StarCircle />
                 Recommended For You
               </Module.Title>
+              <Recommended episodes={recommended} />
             </Module>
           ) : (
             <Module tint={theme.brand.primary}>
@@ -86,6 +141,7 @@ function Episodes({ episodes }) {
             episodes={episodes}
             played={played}
             markAsPlayed={markAsPlayed}
+            searchTerm={searchTerm}
           />
         </Content>
       </EpisodesPageGrid>
